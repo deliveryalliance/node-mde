@@ -1,20 +1,14 @@
 'use strict'
 
-const SignedXml = require('xml-crypto').SignedXml
+const { SignedXml } = require('xml-crypto')
 
-class InfoProvider {
-  /**
-   *
-   * @param {string} cert
-   */
-  constructor(cert) {
-    this.getKeyInfo = function () {
-      return `<X509Data><X509Certificate>${cert
-        .split('-----')[2]
-        .replace(/[\r\n]/g, '')}</X509Certificate></X509Data>`
-    }
-  }
-}
+// Algoritmos exigidos pela assinatura de eventos da NF-e (mantidos explícitos
+// pois o xml-crypto v5+ não assume mais SHA-1 por padrão). Produzem assinatura
+// byte-a-byte idêntica à do xml-crypto 2.x usado anteriormente.
+const ENVELOPED_SIGNATURE = 'http://www.w3.org/2000/09/xmldsig#enveloped-signature'
+const C14N = 'http://www.w3.org/TR/2001/REC-xml-c14n-20010315'
+const RSA_SHA1 = 'http://www.w3.org/2000/09/xmldsig#rsa-sha1'
+const SHA1 = 'http://www.w3.org/2000/09/xmldsig#sha1'
 
 class Assinatura {
   /**
@@ -26,17 +20,24 @@ class Assinatura {
    */
   static assinarXml(cert, key, xml) {
     const xpath = "//*[local-name(.)='infEvento']"
-    const transforms = [
-      'http://www.w3.org/2000/09/xmldsig#enveloped-signature',
-      'http://www.w3.org/TR/2001/REC-xml-c14n-20010315',
-    ]
-    const sig = new SignedXml()
+    const transforms = [ENVELOPED_SIGNATURE, C14N]
 
-    sig.keyInfoProvider = new InfoProvider(cert)
+    const sig = new SignedXml({
+      privateKey: key,
+      publicCert: cert,
+      signatureAlgorithm: RSA_SHA1,
+      canonicalizationAlgorithm: C14N,
+      getKeyInfoContent: () =>
+        `<X509Data><X509Certificate>${cert
+          .split('-----')[2]
+          .replace(/[\r\n]/g, '')}</X509Certificate></X509Data>`,
+    })
 
-    sig.addReference(xpath, transforms)
-    sig.canonicalizationAlgorithm = transforms[1]
-    sig.signingKey = key
+    sig.addReference({
+      xpath: xpath,
+      transforms: transforms,
+      digestAlgorithm: SHA1,
+    })
 
     sig.computeSignature(xml, {
       location: {

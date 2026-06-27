@@ -2,6 +2,10 @@
 
 ## [Não publicado]
 
+### Segurança
+
+- Atualizado `xml-crypto` de `2.1.6` para `6.1.2`, corrigindo os advisories *high* do `@xmldom/xmldom` (`<=0.8.12`) que vinham por dependência transitiva. A assinatura de eventos em `src/util/assinatura.js` foi migrada para a nova API mantendo o mesmo perfil de algoritmos (RSA-SHA1 / SHA1 / C14N) — saída verificada byte-a-byte idêntica à da versão anterior. Removido `@types/xml-crypto` (o `xml-crypto` v6 já inclui os próprios tipos)
+
 ## [0.14.13] / 2025-04-23
 
 - Node lançando erro `TypeError: Cannot add property rejectUnauthorized, object is not extensible` #22
