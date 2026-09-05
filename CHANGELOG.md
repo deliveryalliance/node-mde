@@ -5,6 +5,11 @@
 ### Segurança
 
 - Atualizado `xml-crypto` de `2.1.6` para `6.1.2`, corrigindo os advisories *high* do `@xmldom/xmldom` (`<=0.8.12`) que vinham por dependência transitiva. A assinatura de eventos em `src/util/assinatura.js` foi migrada para a nova API mantendo o mesmo perfil de algoritmos (RSA-SHA1 / SHA1 / C14N) — saída verificada byte-a-byte idêntica à da versão anterior. Removido `@types/xml-crypto` (o `xml-crypto` v6 já inclui os próprios tipos)
+- Atualizado `axios` de `1.8.3` para `1.20.0`, corrigindo 29 advisories (*high*) da série 1.x — SSRF por bypass de `NO_PROXY`, vazamento de `Proxy-Authorization` em redirecionamentos, DoS e gadgets de *prototype pollution*. O uso em `src/services/sefaz-service.js` (`axios.create` com `httpsAgent`, `baseURL` e `timeout`) não mudou e os padrões de `maxContentLength`/`maxBodyLength` seguem ilimitados
+- Atualizado `node-forge` de `1.3.1` para `1.4.0`, corrigindo 7 advisories (*high*) — recursão ilimitada e dessincronização do validador ASN.1, truncamento de OID, bypass de `basicConstraints` e forjamento de assinaturas RSA-PKCS/Ed25519. A conversão PKCS#12 → PEM em `src/util/certificado.js` foi verificada com PFX moderno (AES/PBKDF2/SHA-256), legado (RC2-40/3DES/SHA-1, formato típico das exportações ICP-Brasil) e sem MAC — saída byte-a-byte idêntica à da versão anterior
+- Atualizado `fast-xml-parser` de `4.5.3` para `5.11.1`, corrigindo 6 advisories (1 *critical*) — expansão de entidades em DOCTYPE sem limite, bypass por entidades numéricas, *stack overflow* no `XMLBuilder` e injeção de comentário/CDATA. As opções do `XMLParser`/`XMLBuilder` em `src/util/xml.js` mantêm o mesmo comportamento na v5: XML de requisição, JSON de resposta, `docZip` descompactado e assinatura verificados byte-a-byte idênticos. Adicionado `test/helpers.test.js` com testes *golden* de `montarResponse` (cStat 138/137/135/573, `docZip` único e múltiplo, sentinela `<error>`)
+- Atualizado `mocha` (devDependency) de `^10.8.2` para `^12.0.0`, removendo o `serialize-javascript` vulnerável (RCE e DoS). A suíte de testes passa a exigir Node `^20.19.0 || >=22.12.0`
+- `npm audit`: 0 vulnerabilidades
 
 ## [0.14.13] / 2025-04-23
 
