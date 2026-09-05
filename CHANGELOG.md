@@ -2,6 +2,8 @@
 
 ## [Não publicado]
 
+## [0.14.15] / 2026-09-05
+
 ### Segurança
 
 - Atualizado `xml-crypto` de `2.1.6` para `6.1.2`, corrigindo os advisories *high* do `@xmldom/xmldom` (`<=0.8.12`) que vinham por dependência transitiva. A assinatura de eventos em `src/util/assinatura.js` foi migrada para a nova API mantendo o mesmo perfil de algoritmos (RSA-SHA1 / SHA1 / C14N) — saída verificada byte-a-byte idêntica à da versão anterior. Removido `@types/xml-crypto` (o `xml-crypto` v6 já inclui os próprios tipos)
@@ -10,6 +12,10 @@
 - Atualizado `fast-xml-parser` de `4.5.3` para `5.11.1`, corrigindo 6 advisories (1 *critical*) — expansão de entidades em DOCTYPE sem limite, bypass por entidades numéricas, *stack overflow* no `XMLBuilder` e injeção de comentário/CDATA. As opções do `XMLParser`/`XMLBuilder` em `src/util/xml.js` mantêm o mesmo comportamento na v5: XML de requisição, JSON de resposta, `docZip` descompactado e assinatura verificados byte-a-byte idênticos. Adicionado `test/helpers.test.js` com testes *golden* de `montarResponse` (cStat 138/137/135/573, `docZip` único e múltiplo, sentinela `<error>`)
 - Atualizado `mocha` (devDependency) de `^10.8.2` para `^12.0.0`, removendo o `serialize-javascript` vulnerável (RCE e DoS). A suíte de testes passa a exigir Node `^20.19.0 || >=22.12.0`
 - `npm audit`: 0 vulnerabilidades
+
+### Modificado
+
+- Os artefatos de build `lib/` e `dist/` (entry points `main` e `types` do `package.json`) passam a ser versionados no repositório, pois o pacote é consumido como tarball do GitHub e o npm não executa o build nesse caso. Removidos `lib` e `dist` do `.gitignore`
 
 ## [0.14.13] / 2025-04-23
 
@@ -334,7 +340,8 @@
   - 210220 - Desconhecimento da Operação
   - 210240 - Operação não Realizada
 
-[não publicado]: https://github.com/lucashpmelo/node-mde/compare/0.14.13..HEAD
+[não publicado]: https://github.com/lucashpmelo/node-mde/compare/0.14.15..HEAD
+[0.14.15]: https://github.com/lucashpmelo/node-mde/compare/0.14.13...0.14.15
 [0.14.13]: https://github.com/lucashpmelo/node-mde/compare/0.14.12...0.14.13
 [0.14.12]: https://github.com/lucashpmelo/node-mde/compare/0.14.11...0.14.12
 [0.14.11]: https://github.com/lucashpmelo/node-mde/compare/0.14.10...0.14.11
