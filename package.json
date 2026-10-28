@@ -1,6 +1,6 @@
 {
   "name": "node-mde",
-  "version": "0.14.15",
+  "version": "0.14.16",
   "description": "Biblioteca para consultar notas destinadas e enviar evento de manifestação do destinatário",
   "main": "./lib/index.js",
   "types": "./dist/index.d.ts",
@@ -37,11 +37,11 @@
   },
   "homepage": "https://github.com/lucashpmelo/node-mde#readme",
   "dependencies": {
-    "axios": "1.20.0",
-    "fast-xml-parser": "5.11.1",
+    "axios": "1.21.0",
+    "fast-xml-parser": "5.11.2",
     "luxon": "^3.5.0",
-    "node-forge": "1.4.0",
-    "xml-crypto": "6.1.2"
+    "node-forge": "1.4.2",
+    "xml-crypto": "6.4.0"
   },
   "devDependencies": {
     "@types/luxon": "^3.4.2",

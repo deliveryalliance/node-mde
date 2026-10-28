@@ -2,6 +2,16 @@
 
 ## [Não publicado]
 
+## [0.14.16] / 2026-10-28
+
+### Segurança
+
+- Atualizado `node-forge` de `1.4.0` para `1.4.2`, corrigindo 17 advisories (8 *high*) — entre eles os que atingem a conversão PKCS#12 → PEM em `src/util/certificado.js`: forjamento do MAC do PKCS#12 por falta de checagem do número de iterações, esgotamento de recursos ao decodificar BIT STRING no ASN.1 e ReDoS na decodificação de PEM. A `1.4.2` corrige a regressão da `1.4.1` no `pem.decode()` com entrada `Buffer`
+- Atualizado `xml-crypto` de `6.1.2` para `6.4.0`, com correções de canonicalização (namespaces, instruções de processamento, escape de valores) e de verificação de assinaturas. A assinatura de eventos em `src/util/assinatura.js` não mudou e a saída foi verificada byte-a-byte idêntica à da versão anterior
+- Atualizado `axios` de `1.20.0` para `1.21.0`. A única mudança incompatível (objetos de classe usados como `headers` padrão) não afeta `src/services/sefaz-service.js`, que usa um objeto literal
+- Atualizado `fast-xml-parser` de `5.11.1` para `5.11.2` (decodificação de entrada `Uint8Array` como UTF-8). JSON de resposta e XML de requisição verificados byte-a-byte idênticos
+- `npm audit`: 0 vulnerabilidades
+
 ## [0.14.15] / 2026-09-05
 
 ### Segurança
